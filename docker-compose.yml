@@ -1,0 +1,14 @@
+services:
+  wappie:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./config.json:/home/wappie/config.json
+    ports:
+      - "3000:3000"
+    networks:
+      - interwebz
+
+networks:
+  interwebz:
