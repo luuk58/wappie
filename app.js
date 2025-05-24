@@ -32,13 +32,11 @@ liquidscript = liquidscript_1 + "\n\n\n" + liquidscript_2 + "\n\n\n" + liquidscr
 
 fs.writeFileSync("./wappie.liq", liquidscript);
 
-
-
-const { spawn } = require('child_process');
+const { spawn } = require("child_process");
 
 const child = spawn("liquidsoap", [__dirname + "/wappie.liq"]);
 
-child.stdout.on('data', data => {
+child.stdout.on("data", data => {
   if (isditjson(data)) {
     io.emit("wapper", JSON.parse(data.toString()));
   } else {
@@ -46,7 +44,7 @@ child.stdout.on('data', data => {
   }
 });
 
-child.stderr.on('data', data => {
+child.stderr.on("data", data => {
   console.log("stderr: " + data);
 });
 
@@ -57,9 +55,9 @@ child.stderr.on('data', data => {
 
 
 
-const express = require('express');
+const express = require("express");
 const app = express();
-const http = require('http');
+const http = require("http");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server, {
@@ -73,25 +71,33 @@ const io = new Server(server, {
 
 
 
-io.on('connection', (socket) => {
-  console.log('client connected: ' + socket.id);
+io.on("connection", (socket) => {
+  console.log("client connected: " + socket.id);
   socket.emit("init", config.stations);
-  socket.on('disconnect', () => {
-    console.log('client disconnected: ' + socket.id);
+  socket.on("disconnect", () => {
+    console.log("client disconnected: " + socket.id);
   });
-
 });
 
 
 
 
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html');
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/index.html");
 });
 
 
 
 
 server.listen(3000, () => {
-  console.log('listening on *:3000');
+  console.log("listening on *:3000");
+});
+
+
+
+
+
+process.on("SIGINT", () => {
+  fs.unlinkSync("./wappie.liq");
+  process.exit(0);
 });
