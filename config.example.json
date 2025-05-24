@@ -1,0 +1,15 @@
+{
+	"liquidsoap": "/usr/bin/liquidsoap",
+	"stations": [
+		{
+			"id": "hetehitsfm",
+			"name": "Hete Hits FM",
+			"url": "http://icecast.hetehits.fm/mp3"
+		},
+		{
+			"id": "radiodeblauwetegel",
+			"name": "Radio De Blauwe Tegel",
+			"url": "https://radioheiloo.nl:4443/dbt1"
+		}
+	]
+}
