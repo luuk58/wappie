@@ -1,28 +1,77 @@
 <script src="https://cdn.socket.io/4.5.0/socket.io.min.js" integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k" crossorigin="anonymous"></script>
 <script>
 
-var s040;
-var glow;
-
-
   const socket = io("ws://luuk.cloud:3000");
   socket.on("connect", () => {
   console.log("connected");
   });
+  
+  
+  function liqtodbfs(liq) {
+    return 20 * Math.log10(liq);
+  }
+  
+ function liqtowidth(liq) {
+   if (liq <= 0) {
+     return 0;
+   }
+   const db = 20 * Math.log10(liq);
+   const mindb = -40;
+   const width = (db - mindb) / (0 - mindb);
+   return Math.max(0, Math.min(1, width)) * 100;
+ }
 
-socket.on('init', (data) => {
-   document.body.innerHTML = "";
+  
+
+socket.on("init", (data) => {
+   document.getElementById("meters").innerHTML = "";
    console.log(data);
    data.forEach(station => {
-	 document.write('<input type="range" min="0" max="75" value="50" class="slider" id="' + station.id + '"> ' + station.name + '<br>');
+     document.getElementById("meters").innerHTML += ("<tr><td class=\"stationsnaam\">" + station.name + "</td><td><div class=\"wrapper\"><div class=\"inside\" id=\"" + station.id + "-meter\"></div></div></td><td><span id=\"" + station.id + "-db\"></span></td></tr>");
    });
   });
   
-socket.on('wapper', (data) => {
+socket.on("wapper", (data) => {
 	for (const [key, value] of Object.entries(data)) {
-	  console.log(`${key}: ${value}`);
-	  document.getElementById(key).value = value * 100;
+    document.getElementById(key + "-db").innerHTML = liqtodbfs(value).toFixed(1) + " dBFS";
+    document.getElementById(key + "-meter").style.marginLeft = liqtowidth(value) + "%";
 	}
   });
 
 </script>
+<br><br><br>
+<center>
+<table id="meters">
+</table>
+</center>
+
+<style>
+*{
+  font-family:sans-serif;
+}
+  .wrapper {
+    display:inline-block;
+    border: black 1px solid;
+    background: #377E2F;
+    background: linear-gradient(90deg,
+    rgba(55, 126, 47, 1)   9.9999%, rgba(86, 189, 52, 1)  10%,
+    rgba(86, 189, 52, 1)  54.9999%, rgba(117, 251, 76, 1) 55%,
+    rgba(117, 251, 76, 1) 84.9999%, rgba(255, 255, 84, 1) 85%,
+    rgba(255, 255, 84, 1) 97.6999%, rgba(234, 51, 35, 1)   97.7%);
+    width:100%;
+    max-width:500px;
+    overflow:hidden;
+  }
+  .inside {
+    background-color:black;
+    height:15px;
+    width:100%;
+  }
+  table {
+    table-layout: fixed;
+    width:500px;
+  }
+  .stationsnaam {
+    text-align:right;
+  }
+</style>
