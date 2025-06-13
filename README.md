@@ -2,6 +2,8 @@
 
 Stukje Node en Liquidsoap, om te zien of de boel nog wappert.
 
+![Wappie](https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExd2F4MzFyNW93anV3eGY5ZTI0eHU3aWZ1bThkMXB1eXk0c2phem12eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/goOlBzP82wZBuHdB1e/giphy.gif)
+
 ## Description
 
 Meer wapperende metertjes = meer beter, uiteraard.<br>Daarom Wappie, waar je wat Icecast-streams tegenaan gooit en wapperende metertjes terug krijgt.
